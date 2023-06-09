@@ -1,3 +1,5 @@
+from absl import logging
+
 from pysc2.env.environment import Base, StepType, TimeStep
 from pysc2 import run_configs
 from pysc2.lib import replay, features
@@ -63,7 +65,7 @@ class ReplayEnv(Base):
             step_type=self._state,
             reward=0,
             discount=0,
-            observation=agent_obs) for _ in range(1))
+            observation=agent_obs) for _ in range(1)), info
 
     def step(self, action):
         self._controller.step(self._step_mul)
@@ -72,6 +74,7 @@ class ReplayEnv(Base):
 
         if obs.player_result:  # Episode over.
             self._state = StepType.LAST
+            logging.info("Replay has finished.")
         else:
             self._state = StepType.MID
 
