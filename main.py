@@ -18,7 +18,7 @@ def main(unused_argv):
         while True:
             with sc2_env.SC2Env(  # 创建SC2Env的同时将开启StarCraft2游戏进程
                     map_name="Acropolis",
-                    players=[sc2_env.Agent(sc2_env.Race.protoss),
+                    players=[sc2_env.Agent(sc2_env.Race.terran),
                              # sc2_env.Agent(sc2_env.Race.terran),
                              sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
                              ],
@@ -46,9 +46,6 @@ def main(unused_argv):
                     if timesteps[0].last():
                         break
                     timesteps = env.step(step_actions)  # timesteps就是传给agent的obs
-
-                    if timesteps[0].observation.unit_counts.shape[0] != 2:
-                        print('Find enemy!')
 
     except KeyboardInterrupt:
         exit(0)

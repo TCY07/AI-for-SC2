@@ -8,17 +8,22 @@ import numpy as np
 import os
 
 ROOT = r"C:\Users\TCY\Documents\StarCraft II\Accounts\1126365997\2-S2-1-10376425\Replays\Multiplayer\\"
-FILE_NAMES = [  # "Dragon Scales LE (16).SC2Replay",
-              "Royal Blood LE (10).SC2Replay",
-              "Royal Blood LE (9).SC2Replay",
-              "Dragon Scales LE (15).SC2Replay",
-              "Dragon Scales LE (14).SC2Replay",
+FILE_NAMES = ["Dragon Scales LE (16)",
+              "Royal Blood LE (10)",
+              "Royal Blood LE (9)",
+              "Dragon Scales LE (15)",
+              "Dragon Scales LE (14)",
               ]
+debug = False
 
 
 def main(unused_argv):
+    if debug:
+        generate_data()
+        return
+
     for file in FILE_NAMES:
-        generate_data(ROOT + file, file)
+        generate_data(ROOT + file + '.SC2Replay', file)
 
 
 def generate_data(*args):
@@ -42,8 +47,8 @@ def generate_data(*args):
                     observed_player=2,
                     step_mul=200,
                 ) as env2,\
-                open('./output/' + (args[1] + '_player1' if len(args) > 1 else 'test1'), 'w') as f1,\
-                open('./output/' + (args[1] + '_player2' if len(args) > 1 else 'test2'), 'w') as f2:
+                open('./output/' + (args[1] + '_player1.txt' if len(args) > 1 else 'test1.txt'), 'w') as f1,\
+                open('./output/' + (args[1] + '_player2.txt' if len(args) > 1 else 'test2.txt'), 'w') as f2:
             timesteps1: tuple[sc2_env.environment.TimeStep]  # the type of timesteps
             timesteps1, info1 = env1.reset()
             timesteps2: tuple[sc2_env.environment.TimeStep]  # the type of timesteps
@@ -62,8 +67,8 @@ def generate_data(*args):
             if info1.player_info[0].player_result.result == 3 or info1.player_info[0].player_result.result == 4:
                 winner = 0  # no winner
 
-            f1.write(str(winner) + ' ' + str(info1.game_duration_loops) + ' ')
-            f2.write(str(winner) + ' ' + str(info1.game_duration_loops) + ' ')
+            f1.write(str(winner) + ' ' + str(info1.game_duration_loops) + '\n')
+            f2.write(str(winner) + ' ' + str(info1.game_duration_loops) + '\n')
 
             while True:
                 if timesteps1[0].last() or timesteps2[0].last():
@@ -97,11 +102,15 @@ def generate_data(*args):
                 # 'food_workers', 'idle_worker_count', 'army_count', 'warp_gate_count', 'larva_count']
                 # player1_data = np.concatenate((player1_data, np.array(obs1['player']).reshape(-1)), axis=0)
 
+                # raw_units:
+                # (look up in pysc2.features.FeatureUnit)
                 player1_data = np.concatenate((player1_data, np.array(obs1['raw_units']).reshape(-1)), axis=0)
                 player2_data = np.concatenate((player2_data, np.array(obs2['raw_units']).reshape(-1)), axis=0)
 
                 f1.write(' '.join(str(d) for d in player1_data))
+                f1.write('\n')
                 f2.write(' '.join(str(d) for d in player2_data))
+                f2.write('\n')
 
                 print(player1_data.shape, player2_data.shape)
                 print('-' * 40)
