@@ -47,8 +47,8 @@ def generate_data(*args):
                     observed_player=2,
                     step_mul=200,
                 ) as env2,\
-                open('./output/' + (args[1] + '_player1.txt' if len(args) > 1 else 'test1.txt'), 'w') as f1,\
-                open('./output/' + (args[1] + '_player2.txt' if len(args) > 1 else 'test2.txt'), 'w') as f2:
+                open('./output/' + (args[1] + '_player1.txt' if len(args) > 1 else 'test_player1.txt'), 'w') as f1,\
+                open('./output/' + (args[1] + '_player2.txt' if len(args) > 1 else 'test_player2.txt'), 'w') as f2:
             timesteps1: tuple[sc2_env.environment.TimeStep]  # the type of timesteps
             timesteps1, info1 = env1.reset()
             timesteps2: tuple[sc2_env.environment.TimeStep]  # the type of timesteps

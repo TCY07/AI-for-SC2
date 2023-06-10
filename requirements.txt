@@ -1,2 +1,5 @@
 numpy==1.24.3
 pysc2==4.0.0
+torch==1.12.0+cu116
+torchvision==0.13.0+cu116
+
