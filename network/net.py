@@ -13,6 +13,8 @@ class LSTM(nn.Module):
 
         self.use_cuda = cuda
 
+        self.bn1 = torch.nn.BatchNorm1d(num_features=input_size)
+        self.bn2 = torch.nn.BatchNorm1d(num_features=input_size)
         self.lstm1 = torch.nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers,
                                    batch_first=True)
         self.lstm2 = torch.nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers,

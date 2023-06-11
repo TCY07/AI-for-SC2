@@ -1,5 +1,5 @@
 from pysc2.env import sc2_env
-from pysc2.lib import  features
+from pysc2.lib import features
 from absl import app
 
 from env.replay_env import ReplayEnv
@@ -8,12 +8,32 @@ import numpy as np
 import os
 
 ROOT = r"C:\Users\TCY\Documents\StarCraft II\Accounts\1126365997\2-S2-1-10376425\Replays\Multiplayer\\"
-FILE_NAMES = ["Dragon Scales LE (16)",
-              "Royal Blood LE (10)",
-              "Royal Blood LE (9)",
-              "Dragon Scales LE (15)",
-              "Dragon Scales LE (14)",
-              ]
+FILE_NAMES = [
+    # "Dragon Scales LE (16)",
+    # "Royal Blood LE (10)",
+    # "Royal Blood LE (9)",
+    # "Dragon Scales LE (15)",
+    # "Dragon Scales LE (14)",
+
+    "Gresvan LE (11)",
+    "Ancient Cistern LE (14)",
+    "Dragon Scales LE (13)",
+    "Ancient Cistern LE (13)",
+    "Gresvan LE (10)",
+    "Royal Blood LE (8)",
+
+    "Altitude LE (12)",
+    "NeoHumanity LE (18)",
+    "NeoHumanity LE (17)",
+    "Babylon LE (14)",
+    "Gresvan LE (9)",
+    "Ancient Cistern LE (12)",
+    "NeoHumanity LE (16)",
+    "Dragon Scales LE (12)",
+    "Ancient Cistern LE (11)",
+    "Gresvan LE (8)",
+    "NeoHumanity LE (15)",
+]
 debug = False
 
 
@@ -27,7 +47,6 @@ def main(unused_argv):
 
 
 def generate_data(*args):
-
     try:
         with ReplayEnv(
                 interface_format=features.AgentInterfaceFormat(
@@ -46,8 +65,8 @@ def generate_data(*args):
                     sc2_replay=(args[0] if len(args) else r"C:\Users\TCY\Desktop\test.SC2Replay"),
                     observed_player=2,
                     step_mul=200,
-                ) as env2,\
-                open('./output/' + (args[1] + '_player1.txt' if len(args) > 1 else 'test_player1.txt'), 'w') as f1,\
+                ) as env2, \
+                open('./output/' + (args[1] + '_player1.txt' if len(args) > 1 else 'test_player1.txt'), 'w') as f1, \
                 open('./output/' + (args[1] + '_player2.txt' if len(args) > 1 else 'test_player2.txt'), 'w') as f2:
             timesteps1: tuple[sc2_env.environment.TimeStep]  # the type of timesteps
             timesteps1, info1 = env1.reset()

@@ -3,6 +3,8 @@ from pysc2.env import sc2_env
 from pysc2.lib import actions, features
 from absl import app
 
+import agent as ag
+
 
 class TerranAgent(base_agent.BaseAgent):
     def step(self, obs):
@@ -12,7 +14,7 @@ class TerranAgent(base_agent.BaseAgent):
 
 
 def main(unused_argv):
-    agent = TerranAgent()
+    agent = ag.SmartAgent()
 
     try:
         while True:
@@ -28,7 +30,7 @@ def main(unused_argv):
                         use_unit_counts=True,
                         feature_dimensions=features.Dimensions(screen=84, minimap=64)),  # 设定屏幕和小地图的分辨率
                     step_mul=16,  # 游戏迭代次数 / 代理迭代次数
-                    realtime=True,
+                    realtime=False,
                     game_steps_per_episode=0,
                     visualize=False,  # 另开窗口显示camera和feature层
                     window_size=(1500, 1200),  # 游戏窗口大小

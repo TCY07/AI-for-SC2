@@ -37,8 +37,13 @@ class ReplayDataset(Dataset):
                     temp.extend(line.split(' '))
                     self.data_player2.append([int(item) for item in temp])  # first_line是一样的，可以通用
 
+        # p1_mean, p1_std = np.mean(self.data_player1), np.std(self.data_player1)
+        # self.data_player1 = (self.data_player1 - p1_mean) / p1_std
+        # p2_mean, p2_std = np.mean(self.data_player2), np.std(self.data_player2)
+        # self.data_player2 = (self.data_player2 - p2_mean) / p2_std
+
     def __getitem__(self, i):
-        target = np.array(self.data_player1[i][:2]).reshape(-1, 1)  # result, total_game_loop
+        target = np.array(self.data_player1[i][0] - 1)  # result, total_game_loop
 
         data1 = self.data_player1[i][2:]
         player1 = np.array(data1[:-(len(data1) % self.dim)]).reshape(-1, self.dim)
@@ -55,7 +60,7 @@ def collate_fn(batch_data):
     定义batch里面的数据的组织方式
     """
 
-    player1, player2, labels = zip(*batch_data)
+    player1, player2, target = zip(*batch_data)
 
     player1 = [torch.Tensor(p) for p in player1]
     player2 = [torch.Tensor(p) for p in player2]
@@ -63,7 +68,7 @@ def collate_fn(batch_data):
     padded1 = pad_sequence(player1, batch_first=True, padding_value=0)
     padded2 = pad_sequence(player2, batch_first=True, padding_value=0)
 
-    return torch.Tensor(padded1), torch.Tensor(padded2), torch.Tensor(labels)
+    return torch.Tensor(padded1), torch.Tensor(padded2), torch.LongTensor(np.array(target))
 
 
 def prepare_data(batch_size, root=r"../output/"):
